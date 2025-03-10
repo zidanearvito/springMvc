@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Form Customer</title>
+</head>
+<body>
+<h2>Form Customer</h2>
+
+<form th:action="@{/customer/save}" th:object="${customer}" method="post">
+  <label>Nama:</label>
+  <input type="text" th:field="*{nama}" required /><br>
+
+  <label>Kota:</label>
+  <select th:field="*{kota}">
+    <option th:each="kota : ${kotaList}" th:value="${kota.kota}" th:text="${kota.kota}"></option>
+  </select><br>
+
+  <label>Gunung:</label>
+  <select th:field="*{gunung}">
+    <option th:each="gunung : ${gunungList}" th:value="${gunung.nama_gunung}" th:text="${gunung.nama_gunung}"></option>
+  </select><br>
+
+  <button type="submit">Simpan</button>
+</form>
+
+<div th:if="${param.success}">
+  <p style="color: green;">Customer berhasil disimpan!</p>
+</div>
+</body>
+</html>
