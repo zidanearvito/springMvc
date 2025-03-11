@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Review Data</title>
+</head>
+<body>
+<h2>Review Data</h2>
+<p>Nama: <span th:text="${customer.nama}"></span></p>
+<p>Kota: <span th:text="${customer.kota}"></span></p>
+<p>Gunung: <span th:text="${customer.gunung}"></span></p>
+
+<form th:action="@{/customer/submit}" method="post">
+    <button type="submit">Submit</button>
+</form>
+</body>
+</html>

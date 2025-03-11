@@ -1,30 +1,36 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+>
 <head>
-  <title>Form Customer</title>
+    <title>Form Customer</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
 <h2>Form Customer</h2>
 
 <form th:action="@{/customer/save}" th:object="${customer}" method="post">
-  <label>Nama:</label>
-  <input type="text" th:field="*{nama}" required /><br>
+    <label>Nama:</label>
+    <input class="form-control" type="text" th:field="*{nama}" required/><br>
 
-  <label>Kota:</label>
-  <select th:field="*{kota}">
-    <option th:each="kota : ${kotaList}" th:value="${kota.kota}" th:text="${kota.kota}"></option>
-  </select><br>
+    <label>Kota:</label>
+    <select th:field="*{kota}">
+        <option th:each="kota : ${kotaList}" th:value="${kota.kota}" th:text="${kota.kota}"></option>
+    </select><br>
 
-  <label>Gunung:</label>
-  <select th:field="*{gunung}">
-    <option th:each="gunung : ${gunungList}" th:value="${gunung.nama_gunung}" th:text="${gunung.nama_gunung}"></option>
-  </select><br>
+    <label>Gunung:</label>
+    <select th:field="*{gunung}">
+        <option th:each="gunung : ${gunungList}" th:value="${gunung.nama_gunung}"
+                th:text="${gunung.nama_gunung}"></option>
+    </select><br>
 
-  <button type="submit">Simpan</button>
+    <button type="submit">Simpan</button>
 </form>
 
 <div th:if="${param.success}">
-  <p style="color: green;">Customer berhasil disimpan!</p>
+    <p style="color: green;">Customer berhasil disimpan!</p>
 </div>
 </body>
 </html>

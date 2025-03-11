@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Form 3 - Gunung</title>
+</head>
+<body>
+<h2>Pilih Gunung</h2>
+<form th:action="@{/customer/form3}" method="post">
+    <select name="gunung">
+        <option th:each="gunung : ${gunungList}" th:value="${gunung.nama_gunung}" th:text="${gunung.nama_gunung}"
+                th:selected="${customer.gunung == gunung}"></option>
+    </select><br>
+    <button type="submit">Next</button>
+</form>
+</body>
+</html>

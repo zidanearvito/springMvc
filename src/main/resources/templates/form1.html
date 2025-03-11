@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Form 1 - Nama</title>
+</head>
+<body>
+<h2>Masukkan Nama</h2>
+<form th:action="@{/customer/form1}" method="post">
+    <input type="text" name="nama" th:value="${customer.nama}" placeholder="Nama" required><br>
+    <button type="submit">Next</button>
+</form>
+</body>
+</html>
