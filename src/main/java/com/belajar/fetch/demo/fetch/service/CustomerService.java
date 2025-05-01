@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.SessionScope;
 
+import java.util.List;
+
 @Service
 @SessionScope
 public class CustomerService {
@@ -33,6 +35,10 @@ public class CustomerService {
     // Mengambil data sementara
     public Customer getCustomer() {
         return customer;
+    }
+
+    public List<Customer> getCustomers() {
+        return customerRepository.findAll();
     }
 
     // Menyimpan ke database

@@ -1,17 +1,27 @@
 package com.belajar.fetch.demo.fetch.controller;
 
+import com.belajar.fetch.demo.fetch.dto.LapKeuRequestDto;
+import com.belajar.fetch.demo.fetch.entity.Customer;
 import com.belajar.fetch.demo.fetch.entity.Gunung;
 import com.belajar.fetch.demo.fetch.entity.Kota;
+import com.belajar.fetch.demo.fetch.entity.LaporanKeuangan;
+import com.belajar.fetch.demo.fetch.repository.LaporanKeuanganRepository;
 import com.belajar.fetch.demo.fetch.service.CustomerService;
 import com.belajar.fetch.demo.fetch.service.GunungService;
 import com.belajar.fetch.demo.fetch.service.KotaService;
+import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 @Controller
 @RequestMapping("/customer")
 public class MultiFormController {
@@ -24,6 +34,8 @@ public class MultiFormController {
 
     @Autowired
     private GunungService gunungService;
+    @Autowired
+    private LaporanKeuanganRepository laporanKeuanganRepository;
 
     @ModelAttribute("kotaList")
     public List<Kota> kotaList() {
@@ -33,6 +45,13 @@ public class MultiFormController {
     @ModelAttribute("gunungList")
     public List<Gunung> gunungList() {
         return gunungService.getAllGunung();
+    }
+
+    @GetMapping("")
+    public String customers(Model model) {
+        List<Customer> customers = customerService.getCustomers();
+        model.addAttribute("customers", customers);
+        return "/show-data";
     }
 
     // Halaman 1 - Input Nama
@@ -86,5 +105,35 @@ public class MultiFormController {
     public String submitForm() {
         customerService.saveCustomer();
         return "success";
+    }
+
+    @GetMapping("/laporan-keuangan")
+    public String keuanganForm(Model model) {
+        Optional<LaporanKeuangan> laporanKeuanganOptional = laporanKeuanganRepository.findById(2L);
+        LaporanKeuangan laporanKeuangan = laporanKeuanganOptional.get();
+        LapKeuRequestDto lapKeuRequestDto = new LapKeuRequestDto();
+        lapKeuRequestDto.setKas(laporanKeuangan.getKas());
+        lapKeuRequestDto.setPiutang(laporanKeuangan.getPiutang());
+        lapKeuRequestDto.setPersediaan(laporanKeuangan.getPersediaan());
+        lapKeuRequestDto.setAsetLancar(laporanKeuangan.getAsetLancar());
+        model.addAttribute("lapKeuRequestDto", lapKeuRequestDto);
+        return "laporan-keuangan";
+    }
+
+    @PostMapping("/post-keuangan")
+    public String saveKeuangan(@Valid @ModelAttribute LapKeuRequestDto request, BindingResult result) {
+        log.info("input req: {}",request.toString());
+
+        if (result.hasErrors()) {
+            return "laporan-keuangan";
+        }
+
+        LaporanKeuangan laporanKeuangan = new LaporanKeuangan();
+        laporanKeuangan.setKas(request.getKas());
+        laporanKeuangan.setPiutang(request.getPiutang());
+        laporanKeuangan.setPersediaan(request.getPersediaan());
+        laporanKeuangan.setAsetLancar(request.getAsetLancar());
+        laporanKeuanganRepository.save(laporanKeuangan);
+        return "redirect:/customer/laporan-keuangan";
     }
 }
